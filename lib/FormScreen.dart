@@ -27,7 +27,7 @@ class _FormScreenState extends State<FormScreen> {
 
   @override
   Widget build(BuildContext context) {
-    form.control("name").valueChanges.listen((event) {});
+    // form.control("result").valueChanges.listen((event) {});
     return Scaffold(
       appBar: AppBar(
         title: const Text("Form"),
@@ -192,12 +192,27 @@ class _FormScreenState extends State<FormScreen> {
               const SizedBox(
                 height: 10,
               ),
-              ReactiveTextField(
-                formControl: form.control("resultNumber") as FormControl<int>,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  hintText: "Result",
-                ),
+              ReactiveValueListenableBuilder(
+                formControl: form.control("firstNumber"),
+                builder: (context, control, child) {
+                  form.control("secondNumber").valueChanges.listen((event) {
+                    if (control.value != null && event != null) {
+                      form
+                          .control("resultNumber")
+                          .updateValue(control.value + event);
+                    } else {
+                      form.control("resultNumber").updateValue(null);
+                    }
+                  });
+                  return ReactiveTextField(
+                    formControl:
+                        form.control("resultNumber") as FormControl<int>,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      hintText: "Result",
+                    ),
+                  );
+                },
               ),
             ],
           ),
