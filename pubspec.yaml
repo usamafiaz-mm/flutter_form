@@ -38,6 +38,11 @@ dependencies:
   cupertino_icons: ^1.0.2
   reactive_forms: ^14.1.0
   mask_text_input_formatter: ^2.4.0
+  sqflite: ^2.1.0+1
+  path: ^1.8.2
+  image_picker: ^0.8.6
+  fluttertoast: ^8.1.1
+
 
 dev_dependencies:
   flutter_test:
