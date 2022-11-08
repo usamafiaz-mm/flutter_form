@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_form/DataModel.dart';
-import 'package:flutter_form/DbHandler.dart';
-import 'package:flutter_form/FormScreen.dart';
-import 'package:flutter_form/form_instance.dart';
+import 'package:flutter_form/models/DataModel.dart';
+import 'package:flutter_form/utils/DbHandler.dart';
+import 'package:flutter_form/screens/FormScreen.dart';
+import 'package:flutter_form/utils/form_instance.dart';
 
 class ListScreen extends StatefulWidget {
   const ListScreen({Key? key}) : super(key: key);

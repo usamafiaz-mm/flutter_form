@@ -1,4 +1,4 @@
-import 'package:flutter_form/custom_picker.dart';
+import 'package:flutter_form/custom_reactive_widgets/custom_image_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -7,7 +7,7 @@ class ReactiveImagePicker extends ReactiveFormField<String?, String?> {
       : super(
             formControl: formControlName,
             builder: (ReactiveFormFieldState<String?, String?> field) {
-              return CustomPicker(
+              return CustomImagePicker(
                 onPressed: () async {
                   final ImagePicker _picker = ImagePicker();
                   final XFile? photo =

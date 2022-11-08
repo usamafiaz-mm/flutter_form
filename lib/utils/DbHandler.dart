@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter_form/DataModel.dart';
+import 'package:flutter_form/models/DataModel.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 

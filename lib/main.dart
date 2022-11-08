@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_form/FormScreen.dart';
-import 'package:flutter_form/ListScreen.dart';
+import 'package:flutter_form/screens/FormScreen.dart';
+import 'package:flutter_form/screens/ListScreen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
         inputDecorationTheme: InputDecorationTheme(

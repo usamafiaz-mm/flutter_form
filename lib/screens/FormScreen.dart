@@ -1,13 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_form/CustomDateAccessor.dart';
-import 'package:flutter_form/DataModel.dart';
-import 'package:flutter_form/DbHandler.dart';
-import 'package:flutter_form/ReactiveImagePicker.dart';
+import 'package:flutter_form/custom_reactive_widgets/CustomDateAccessor.dart';
+import 'package:flutter_form/models/DataModel.dart';
+import 'package:flutter_form/utils/DbHandler.dart';
+import 'package:flutter_form/custom_reactive_widgets/ReactiveImagePicker.dart';
+import 'package:flutter_form/custom_reactive_widgets/custom_reactive_multiselect.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:intl/intl.dart';
+
+import '../custom_reactive_widgets/custom_date_picker.dart';
+
+class Animal {
+  final int id;
+  final String name;
+
+  Animal({
+    required this.id,
+    required this.name,
+  });
+}
 
 class FormScreen extends StatefulWidget {
   FormScreen({Key? key, required this.form, this.id}) : super(key: key);
@@ -201,7 +214,7 @@ class _FormScreenState extends State<FormScreen> {
               ),
               ReactiveDatePicker(
                 formControl: widget.form.control("dob") as FormControl<String>,
-                firstDate: DateTime(1990, 1, 1),
+                firstDate: DateTime(1900, 1, 1),
                 lastDate: DateTime.now(),
                 builder: (context, picker, child) {
                   return ReactiveTextField(
@@ -330,36 +343,59 @@ class _FormScreenState extends State<FormScreen> {
                   )),
                 ],
               ),
+              CustomReactiveMultiSelectPicker(
+                  animals: ["Tiger", "Lion", "elephant", "Cheetah", "Eagle"],
+                  formControl: widget.form.control("fav") as FormControl<List>),
+              ReactiveValueListenableBuilder(
+                formControl: widget.form.control("fav"),
+                builder: (context, control, child) {
+                  if (widget.form.control("fav").value == null)
+                    return SizedBox.shrink();
+                  return Text("${widget.form.control("fav").value}");
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              CustomReactiveDateTimePicker(
+                formControl: widget.form.control("dt") as FormControl<String>,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
               ReactiveFormConsumer(
                 builder: (context, formGroup, child) {
                   return ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           fixedSize:
                               Size(MediaQuery.of(context).size.width, 20)),
-                      onPressed: formGroup.valid
-                          ? () {
-                              debugPrint(widget.form.value.toString());
-                              if (widget.id != null) {
-                                DBHandler.updateData(
-                                    widget.id!,
-                                    DataModel.fromJson(
-                                        {"formValue": widget.form.value}));
+                      onPressed: () {
+                        print(widget.form.control("dt"));
+                        if (widget.form.invalid) {
+                          widget.form.markAllAsTouched();
+                          return;
+                        }
+                        debugPrint(widget.form.value.toString());
+                        if (widget.id != null) {
+                          DBHandler.updateData(
+                              widget.id!,
+                              DataModel.fromJson(
+                                  {"formValue": widget.form.value}));
 
-                                Fluttertoast.showToast(
-                                    msg: "Successfully Updated",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.CENTER,
-                                    timeInSecForIosWeb: 1,
-                                    textColor: Colors.white,
-                                    fontSize: 16.0);
-                                Navigator.of(context).pop();
-                              } else {
-                                DBHandler.insertFormData(DataModel.fromJson(
-                                    {"formValue": widget.form.value}));
-                                Navigator.of(context).pop();
-                              }
-                            }
-                          : null,
+                          Fluttertoast.showToast(
+                              msg: "Successfully Updated",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                          Navigator.of(context).pop();
+                        } else {
+                          DBHandler.insertFormData(DataModel.fromJson(
+                              {"formValue": widget.form.value}));
+                          Navigator.of(context).pop();
+                        }
+                      },
                       child: widget.id != null
                           ? const Text("Update")
                           : const Text("Save"));

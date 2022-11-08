@@ -25,6 +25,8 @@ class FormInstance {
       FormControl<String>(validators: [Validators.required]),
       FormControl<String>(validators: [Validators.required]),
     ]),
+    "fav": FormControl<List>(validators: [Validators.required]),
+    "dt": FormControl<String>(validators: [Validators.required])
   });
 
   FormGroup getFormInstance({Map<String, Object?>? value}) {
